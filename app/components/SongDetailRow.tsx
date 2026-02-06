@@ -9,7 +9,7 @@ import {
   type Locale,
   type SongDetails as SongDetailsType,
 } from "@/lib/api";
-import { ThumbsUp, Play, Volume2 } from "lucide-react";
+import { ThumbsUp, Play, Pause, Volume2 } from "lucide-react";
 
 interface SongDetailRowProps {
   index: number;
@@ -34,6 +34,7 @@ export function SongDetailRow({
 
   useEffect(() => {
     let cancelled = false;
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setLoading(true);
     setError(null);
     getSongDetails(index, { locale, seed, likes: likesParam })
@@ -65,7 +66,10 @@ export function SongDetailRow({
   if (loading) {
     return (
       <tr>
-        <td colSpan={5} className="bg-muted/30 p-6 text-center text-muted-foreground">
+        <td
+          colSpan={5}
+          className="bg-muted/30 p-6 text-center text-muted-foreground"
+        >
           Loading…
         </td>
       </tr>
@@ -74,7 +78,10 @@ export function SongDetailRow({
   if (error || !details) {
     return (
       <tr>
-        <td colSpan={5} className="bg-destructive/10 p-6 text-center text-destructive">
+        <td
+          colSpan={5}
+          className="bg-destructive/10 p-6 text-center text-destructive"
+        >
           {error || "Failed to load details"}
         </td>
       </tr>
@@ -105,10 +112,14 @@ export function SongDetailRow({
               <button
                 type="button"
                 onClick={togglePlay}
-                className="rounded-full p-1 hover:bg-muted"
+                className="rounded-full p-1 hover:bg-blue-600 hover:text-white bg-blue-500 text-white"
                 aria-label={playing ? "Pause" : "Play"}
               >
-                <Play className="size-4" />
+                {playing ? (
+                  <Pause className="size-4" />
+                ) : (
+                  <Play className="size-4" />
+                )}
               </button>
               <Volume2 className="size-4" />
               <audio
@@ -126,11 +137,15 @@ export function SongDetailRow({
             <p className="text-sm text-muted-foreground">
               {details.label}, {details.year}
             </p>
-            <div className="mt-3">
-              <Button variant="outline" size="sm" className="mb-2">
+            <div className="mt-8 relative z-10">
+              <Button
+                variant="outline"
+                size="sm"
+                className="absolute -top-7.5 left-2 rounded-none"
+              >
                 Lyrics
               </Button>
-              <div className="max-h-32 overflow-y-auto rounded border bg-muted/30 p-3 text-sm">
+              <div className="max-h-32 bg-white overflow-y-auto rounded border bg-muted/30 p-3 text-sm">
                 {details.lyrics.map((line, i) => (
                   <p key={i}>{line}</p>
                 ))}
