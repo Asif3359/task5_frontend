@@ -33,7 +33,7 @@ export function Toolbar({
   onViewModeChange,
 }: ToolbarProps) {
   return (
-    <div className="flex flex-wrap items-center gap-4 border-b bg-background px-4 py-3">
+    <div className="flex flex-wrap items-center gap-4 gap-8 border-b bg-background px-4 py-3">
       <div className="flex items-center gap-2">
         <label className="text-sm font-medium text-muted-foreground">
           Language
@@ -72,21 +72,23 @@ export function Toolbar({
         <label className="text-sm font-medium text-muted-foreground">
           Likes
         </label>
-        <div className="flex w-40 items-center gap-2">
+        <div className="flex w-40 items-center gap-2 text-blue-500">
           <Slider
+            className="[&_[data-slot=slider-range]]:bg-blue-500 [&_[data-slot=slider-thumb:border-blue-500"
             min={0}
             max={10}
             step={0.1}
-            value={likes}
-            onValueChange={onLikesChange}
+            value={[likes]}
+            onValueChange={(value) => onLikesChange(value[0])}
           />
-          <span className="w-8 text-sm tabular-nums text-muted-foreground">
+          <span className="w-8 text-sm tabular-nums text-muted-foreground ">
             {likes.toFixed(1)}
           </span>
         </div>
       </div>
       <div className="ml-auto flex items-center gap-1">
         <Button
+          className="bg-blue-500 text-white hover:bg-blue-600"
           type="button"
           variant={viewMode === "table" ? "secondary" : "ghost"}
           size="icon"
@@ -96,6 +98,7 @@ export function Toolbar({
           <LayoutGrid className="size-4" />
         </Button>
         <Button
+          className="bg-blue-500 text-white hover:bg-blue-600 hover:text-white"
           type="button"
           variant={viewMode === "list" ? "secondary" : "ghost"}
           size="icon"
